@@ -40,6 +40,7 @@ def viewer(file_id):
         <style> body {{ margin: 0; }} canvas {{ display: block; }} </style>
     </head>
     <body>
+	<h1>si se ve</h1>
         <script src="https://cdn.jsdelivr.net/npm/three@0.152.2/build/three.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/three@0.152.2/examples/js/loaders/GLTFLoader.js"></script>
         <script>
