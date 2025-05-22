@@ -1,6 +1,6 @@
 import os
 import uuid
-from flask import Flask, request, jsonify, send_from_directory, render_template_string
+from flask import Flask, request, jsonify, send_from_directory
 
 app = Flask(__name__)
 
@@ -20,7 +20,6 @@ def upload():
     if not file.filename.lower().endswith('.glb'):
         return jsonify({'error': 'Only .glb files allowed'}), 400
 
-    # Guardar con un ID único
     file_id = str(uuid.uuid4())
     filename = f"{file_id}.glb"
     filepath = os.path.join(UPLOAD_FOLDER, filename)
@@ -30,10 +29,9 @@ def upload():
     return jsonify({'viewer_url': viewer_url})
 
 
-# Ruta para servir visor básico
+# Visor 3D usando Three.js
 @app.route('/viewer/<file_id>')
 def viewer(file_id):
-    # Plantilla HTML simple que carga Three.js y el modelo .glb
     html = f"""
     <!DOCTYPE html>
     <html>
@@ -87,19 +85,13 @@ def viewer(file_id):
     return html
 
 
-# Ruta para servir archivos estáticos (ya lo hace Flask por defecto, pero por si acaso)
+# Archivos estáticos
 @app.route('/static/uploads/<path:filename>')
 def uploaded_file(filename):
     return send_from_directory(UPLOAD_FOLDER, filename)
 
 
+# 🔥 Ejecutar en Render o localmente
 if __name__ == '__main__':
-    app.run(debug=True)
-
-import os
-
-if __name__ == '__main__':
-    port = int(os.environ.get("PORT", 5000))  # Usa el puerto de Render o 5000 localmente
+    port = int(os.environ.get("PORT", 5000))
     app.run(host='0.0.0.0', port=port)
-
-         
